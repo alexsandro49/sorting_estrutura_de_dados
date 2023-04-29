@@ -31,3 +31,26 @@ def merge_sort(x):
             x[pos_new] = middle_rt[pos_rt]
             pos_rt += 1
             pos_new += 1
+            
+            
+          
+def quicksort(x, beginning=0, end=None):
+    if end is None:
+        end = len(x)-1
+    if beginning < end:
+        p = partition(x, beginning, end)
+        quicksort(x, beginning, p-1)
+        quicksort(x, p+1, end)
+
+def partition(x, beginning, end):
+    pi = x[end]
+    i = beginning
+    for k in range(beginning, end):
+        
+        if x [k] <= pi:
+            x[k], x[i] = x[i], x[k]
+            
+            i = i + 1
+    x[i], x[end] = x[end], x[i]
+    return i
+
