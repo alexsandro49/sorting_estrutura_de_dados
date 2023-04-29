@@ -34,23 +34,22 @@ def merge_sort(x):
             
             
           
-def quicksort(x, beginning=0, end=None):
+def quick_sort(x, beginning=0, end=None):
+    def partition(x, beginning, end):
+        pi = x[end]
+        i = beginning
+        for k in range(beginning, end):
+            if x [k] <= pi:
+                x[k], x[i] = x[i], x[k]
+            
+                i = i + 1
+        x[i], x[end] = x[end], x[i]
+        return i
+
     if end is None:
         end = len(x)-1
     if beginning < end:
         p = partition(x, beginning, end)
-        quicksort(x, beginning, p-1)
-        quicksort(x, p+1, end)
-
-def partition(x, beginning, end):
-    pi = x[end]
-    i = beginning
-    for k in range(beginning, end):
-        
-        if x [k] <= pi:
-            x[k], x[i] = x[i], x[k]
-            
-            i = i + 1
-    x[i], x[end] = x[end], x[i]
-    return i
+        quick_sort(x, beginning, p-1)
+        quick_sort(x, p+1, end)
 
