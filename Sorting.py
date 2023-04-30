@@ -31,3 +31,32 @@ def merge_sort(x):
             x[pos_new] = middle_rt[pos_rt]
             pos_rt += 1
             pos_new += 1
+
+def Heapify(array:list, n:int, index:int):
+        maior = index
+        l = 2 * index + 1
+        r = 2 * index + 2
+
+        if l < n and array[maior] < array[l]:
+            maior = l
+
+        if r < n and array[maior] < array[r]:
+            maior = r
+
+        if maior != index:
+            array[maior], array[index] = array[index], array[maior]
+            Heapify(array,n,maior)
+
+def heap_sort(array:list):
+    N = len(array)
+
+    #Constroi Heap Máximo
+    for i in range(N//2 - 1, -1, -1):
+        Heapify(array, N, i)
+
+    for i in range(N-1, 0, -1):
+        #substitui ultimo elemento com o começo da array, reoganiza a array e repete
+        array[i], array[0] = array[0], array[i]
+        Heapify(array, i, 0)
+
+    
