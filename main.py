@@ -2,8 +2,10 @@ from time import sleep
 from db import fetch_data
 
 
-def inicio():
-    print(f"{'GEONAMES - ALL CITIES WITH A POPULATION > 1000':^50}")
+def start():
+    print("="*60)
+    print(f"{'GEONAMES - ALL CITIES WITH A POPULATION > 1000':^60}")
+    print("="*60)
     sleep(0.5)
     print("\nSELECIONE O MÉTODO DE ORDENAÇÃO:")
     sleep(0.3)
@@ -15,24 +17,24 @@ def inicio():
     sleep(0.3)
     while True:
         sleep(0.3)
-        opc_inicio = input(": ")
-        if opc_inicio == "1":
-            metodo = 1
+        opt_start = input(": ")
+        if opt_start == "1":
+            sorting_method = 1
             break
-        elif opc_inicio == "2":
-            metodo = 1
+        elif opt_start == "2":
+            sorting_method = 2
             break
-        elif opc_inicio == "3":
-            metodo = 1
+        elif opt_start == "3":
+            sorting_method = 3
             break
         else:
             print("\nOPÇÃO INVÁLIDA. POR FAVOR, TENTE NOVAMENTE!")
     
     print()
-    current_search = pesquisa(metodo)
-    menu(current_search, metodo)
+    current_search = search(sorting_method)
+    menu(current_search, sorting_method)
 
-def menu(current_search, metodo):
+def menu(current_search, sorting_method):
     while True:
         sleep(0.5)
         print("O QUE FAZER?")
@@ -44,10 +46,10 @@ def menu(current_search, metodo):
         print("0 - FECHAR")
         sleep(0.2)
         while True:
-            opc = input(": ")
+            opt_menu = input(": ")
             sleep(0.5)
             print()
-            if opc == "1":
+            if opt_menu == "1":
                 print("CIDADES EXIBIDAS OU PESQUISA GERAL?")
                 sleep(0.5)
                 print("PESQUISA GERAL POSSUI UM TEMPO DE ESPERA SUPERIOR")
@@ -57,28 +59,28 @@ def menu(current_search, metodo):
                 print("2 - PESQUISA GERAL")
                 sleep(0.5)
                 while True:
-                    opc_dados = input(": ")
-                    if opc_dados == "1":
+                    opt_data = input(": ")
+                    if opt_data == "1":
                         print("\nDIGITE O NOME DA CIDADE:")
                         cid = input(": ")
                         print()
-                        cidade_selecionada(cid, current_search)
+                        find_city(cid, current_search)
                         break
-                    elif opc_dados == "2":
-                        current_search = pesquisa(metodo, False)
+                    elif opt_data == "2":
+                        current_search = search(sorting_method, False)
                         print("\nDIGITE O NOME DA CIDADE:")
                         cid = input(": ")
-                        cidade_selecionada(cid, current_search)
+                        find_city(cid, current_search)
                         break
                     else:
                         print("OPÇÃO INVÁLIDA. POR FAVOR, TENTE NOVAMENTE!\n")
                         sleep(0.5)
                 break
 
-            elif opc == "2":
-                current_search = pesquisa(metodo)
+            elif opt_menu == "2":
+                current_search = search(sorting_method)
                 break
-            elif opc == "0":
+            elif opt_menu == "0":
                 print("Programa finalizado!")
                 sleep(1)
                 exit()
@@ -86,38 +88,45 @@ def menu(current_search, metodo):
                 print("OPÇÃO INVÁLIDA. POR FAVOR, TENTE NOVAMENTE!\n")
                 sleep(0.5)
 
-def pesquisa(metodo, show=True):
+def search(sorting_method, show=True):
     print("INFORME A QUANTIDADE DE CIDADES:")
     sleep(0.3)
-    print("0 RETORNA TODO O BANCO")
+    print("0 RETORNA TODO O BANCO (>140k)")
     while True:
         try:
-            opc_pesquisa = int(input(": "))
-            current_search = resultados(metodo, show, opc_pesquisa)
+            opt_search = int(input(": "))
+            current_search = results(sorting_method, show, opt_search)
             break
         except ValueError:
             print("OPÇÃO INVÁLIDA. POR FAVOR, TENTE NOVAMENTE!\n")   
     return current_search
 
-def resultados(sorting_type, show, rows=0):
-    lista = fetch_data(sorting_type, rows)
+def results(sorting_type, show, rows=0):
+    x = fetch_data(sorting_type, rows)
+    sorted_data = x[0]
+    sorting_time = x[1]
 
     if show:
         print(f"\n{'GEO ID':<11} {'NAME':<19} {'COUNTRY':<8} {'POPULATION'}")
         sleep(0.3)
-        for i in lista:
+        for i in sorted_data:
             print(f"{i[0]:<9} : {i[1]['ascii_name']:<17} : {i[1]['country_code']:<6} : {i[1]['population']}")
             sleep(0.2)
-        print("=========\n")
+        print("="*15)
+        sleep(0.2)
+        print(f"TEMPO GASTO PARA ORDERNAR: {sorting_time:.2f}s")
+        sleep(0.2)
+        print("="*9)
+        print()
+        sleep(0.2)
 
     sleep(0.5)
-    return lista
+    return x
 
-def cidade_selecionada(cid, current_search):
-    lista = current_search
+def find_city(city, current_search):
     found = False
-    for i in lista:
-        if cid.lower() in i[1]['ascii_name'].lower():
+    for i in current_search[0]:
+        if city.lower() in i[1]['ascii_name'].lower():
             sleep(0.5)
             print(f"GEO ID: {i[0]}")
             sleep(0.3)
@@ -137,8 +146,8 @@ def cidade_selecionada(cid, current_search):
             found = True
     if not found:
         sleep(0.5)
-        print("NENHUM CIDADE ENCONTRADA!")
+        print("NENHUMA CIDADE ENCONTRADA!")
         print()
 
  
-inicio()
+start()

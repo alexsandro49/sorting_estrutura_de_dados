@@ -1,5 +1,6 @@
 import json
 from Sorting import *
+from time import time
 
 
 def fetch_data(sorting_type, rows=0):
@@ -23,13 +24,17 @@ def fetch_data(sorting_type, rows=0):
             "coordinates": i["coordinates"],
             "modification_date": i["modification_date"]
         }))
-        
+
+    start_time = time()
+
     if sorting_type == 1:
         merge_sort(all_data)
-    """ elif sorting_type == 2:
+    elif sorting_type == 2:
         heap_sort(all_data)
     else:
-        quick_sort(all_data) """
+        quick_sort(all_data)
+
+    finish_time = time()
 
     if rows == 0:
         return all_data
@@ -37,4 +42,4 @@ def fetch_data(sorting_type, rows=0):
         for i in range(rows):
             data.append(all_data[i])
 
-    return data
+    return (data, (finish_time - start_time))
