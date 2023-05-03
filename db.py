@@ -37,7 +37,7 @@ def fetch_data(sorting_type, rows=0):
     finish_time = time()
 
     if rows == 0:
-        return all_data
+        return (all_data, (finish_time - start_time))
     else:
         for i in range(rows):
             data.append(all_data[i])
